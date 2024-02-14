@@ -1,0 +1,32 @@
+﻿@model IEnumerable<InvWebApp.Models.LogList>
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+
+@{
+}
+<div class="container-fluid">
+    @foreach(var log in Model){
+
+        <div class="alert alert-@getColor(log.LogType)" role="alert">
+            <strong>@log.User.UserName</strong> @Html.Raw(@log.LogMessage) <span>@log.LogDate</span> !
+        </div>
+    }
+</div>
+
+@functions {
+    private string getColor(string action)
+    {
+        switch (action)
+        {
+            case "insert":
+                return "success";
+            case "edit":
+                return "primary";
+            case "delete":
+                return "danger";
+            default:
+                return "secondary";
+        }
+    }
+}

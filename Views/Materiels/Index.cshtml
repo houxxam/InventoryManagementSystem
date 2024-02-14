@@ -55,6 +55,9 @@
                                 @Html.DisplayNameFor(model => model.InventoryNumber)
                             </th>
                             <th>
+                                @Html.DisplayNameFor(model => model.MaterielOwner)
+                            </th>
+                            <th>
                                 @Html.DisplayNameFor(model => model.Categorie)
                             </th>
                             <th>
@@ -81,6 +84,9 @@
                                 </td>
                                 <td>
                                     @Html.DisplayFor(modelItem => item.InventoryNumber)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.MaterielOwner)
                                 </td>
                                 <td>
                                     @Html.DisplayFor(modelItem => item.Categorie.CategorieName)

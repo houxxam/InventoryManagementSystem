@@ -1,4 +1,5 @@
 ﻿using InvWebApp.Data;
+using InvWebApp.Extentions;
 using InvWebApp.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -7,191 +8,190 @@ using Microsoft.EntityFrameworkCore;
 
 namespace InvWebApp.Controllers
 {
-	[Authorize]
-	public class MaterielsController : Controller
-	{
-		private readonly AppDbContext _context;
-		private string createddate = DateTime.Now.ToString();
-		public MaterielsController(AppDbContext context)
-		{
-			_context = context;
-		}
+    [Authorize]
+    public class MaterielsController : Controller
+    {
+        private readonly AppDbContext _context;
 
-		// GET: Materiels
-		public async Task<IActionResult> Index()
-		{
-			var appDbContext = _context.Materiels.OrderByDescending(m=>m.Id).Include(m => m.Categorie).Include(m => m.Service);
-			return View(await appDbContext.ToListAsync());
-		}
+        public MaterielsController(AppDbContext context)
+        {
+            _context = context;
+        }
 
-		// GET: Materiels/Details/5
-		public async Task<IActionResult> Details(int? id)
-		{
-			if (id == null || _context.Materiels == null)
-			{
-				return NotFound();
-			}
+        // GET: Materiels
+        public async Task<IActionResult> Index()
+        {
+            var appDbContext = _context.Materiels.OrderByDescending(m => m.Id).Include(m => m.Categorie).Include(m => m.Service);
+            return View(await appDbContext.ToListAsync());
+        }
 
-			var materiel = await _context.Materiels
-				.Include(m => m.Categorie)
-				.Include(m => m.Service)
-				.FirstOrDefaultAsync(m => m.Id == id);
-			if (materiel == null)
-			{
-				return NotFound();
-			}
+        // GET: Materiels/Details/5
+        public async Task<IActionResult> Details(int? id)
+        {
+            if (id == null || _context.Materiels == null)
+            {
+                return NotFound();
+            }
 
-			return View(materiel);
-		}
+            var materiel = await _context.Materiels
+                .Include(m => m.Categorie)
+                .Include(m => m.Service)
+                .FirstOrDefaultAsync(m => m.Id == id);
+            if (materiel == null)
+            {
+                return NotFound();
+            }
 
-		// GET: Materiels/Create
-		public IActionResult Create()
-		{
-			ViewData["CategorieId"] = new SelectList(_context.Categories, "Id", "CategorieName");
-			ViewData["ServiceId"] = new SelectList(_context.Services, "Id", "ServiceName");
-			return View();
-		}
+            return View(materiel);
+        }
 
-		// POST: Materiels/Create
-		// To protect from overposting attacks, enable the specific properties you want to bind to.
-		// For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-		[HttpPost]
-		[ValidateAntiForgeryToken]
-		public async Task<IActionResult> Create(
-			[Bind("Id,MaterielName,CreatedDate,SerialNumber,InventoryNumber,CategorieId,ServiceId")]
-			Materiel materiel)
-		{
-			if (ModelState.IsValid)
-			{
-				_context.Add(materiel);
-				await _context.SaveChangesAsync();
-				return RedirectToAction(nameof(Index));
-			}
+        // GET: Materiels/Create
+        public IActionResult Create()
+        {
+            ViewData["CategorieId"] = new SelectList(_context.Categories, "Id", "CategorieName");
+            ViewData["ServiceId"] = new SelectList(_context.Services, "Id", "ServiceName");
+            return View();
+        }
 
-			ViewData["CategorieId"] =
-				new SelectList(_context.Categories, "Id", "Id", materiel.CategorieId);
-			ViewData["ServiceId"] = new SelectList(_context.Services, "Id", "Id", materiel.ServiceId);
-			return View(materiel);
-		}
+        // POST: Materiels/Create
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create(
+            [Bind("Id,MaterielName,CreatedDate,SerialNumber,InventoryNumber,MaterielOwner,CategorieId,ServiceId,UserId")]
+            Materiel materiel)
+        {
+            if (ModelState.IsValid)
+            {
+                materiel.UserId = User.getUserId(_context);
+                _context.Add(materiel);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+
+            ViewData["CategorieId"] =
+                new SelectList(_context.Categories, "Id", "Id", materiel.CategorieId);
+            ViewData["ServiceId"] = new SelectList(_context.Services, "Id", "Id", materiel.ServiceId);
+            return View(materiel);
+        }
         [AllowAnonymous]
         [HttpPost]
-		[Route("/api/create")]
+        [Route("/api/create")]
         public async Task<IActionResult> CreateMateriel(
             [Bind("Id,MaterielName,CreatedDate,SerialNumber,InventoryNumber,CategorieId,ServiceId")]
             Materiel materiel)
         {
-            
-                _context.Add(materiel);
-                await _context.SaveChangesAsync();
-                return Ok(materiel);
-            
+            _context.Add(materiel);
+            await _context.SaveChangesAsync();
+            return Ok(materiel);
 
-            
         }
 
         // GET: Materiels/Edit/5
         public async Task<IActionResult> Edit(int? id)
-		{
-			if (id == null || _context.Materiels == null)
-			{
-				return NotFound();
-			}
+        {
+            if (id == null || _context.Materiels == null)
+            {
+                return NotFound();
+            }
 
-			var materiel = await _context.Materiels.FindAsync(id);
-			if (materiel == null)
-			{
-				return NotFound();
-			}
+            var materiel = await _context.Materiels.FindAsync(id);
+            if (materiel == null)
+            {
+                return NotFound();
+            }
 
-			ViewData["CategorieId"] = new SelectList(_context.Categories, "Id", "CategorieName", materiel.CategorieId);
-			ViewData["ServiceId"] = new SelectList(_context.Services, "Id", "ServiceName", materiel.ServiceId);
-			return View(materiel);
-		}
+            ViewData["CategorieId"] = new SelectList(_context.Categories, "Id", "CategorieName", materiel.CategorieId);
+            ViewData["ServiceId"] = new SelectList(_context.Services, "Id", "ServiceName", materiel.ServiceId);
+            return View(materiel);
+        }
 
-		// POST: Materiels/Edit/5
-		// To protect from overposting attacks, enable the specific properties you want to bind to.
-		// For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-		[HttpPost]
-		[ValidateAntiForgeryToken]
-		public async Task<IActionResult> Edit(int id,
-			[Bind("Id,MaterielName,CreatedDate,SerialNumber,InventoryNumber,CategorieId,ServiceId")]
-			Materiel materiel)
-		{
-			if (id != materiel.Id)
-			{
-				return NotFound();
-			}
+        // POST: Materiels/Edit/5
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(int id,
+            [Bind("Id,MaterielName,CreatedDate,SerialNumber,InventoryNumber,MaterielOwner,CategorieId,ServiceId,UserId")]
+            Materiel materiel)
+        {
+            if (id != materiel.Id)
+            {
+                return NotFound();
+            }
 
-			if (ModelState.IsValid)
-			{
-				try
-				{
-					_context.Update(materiel);
-					await _context.SaveChangesAsync();
-				}
-				catch (DbUpdateConcurrencyException)
-				{
-					if (!MaterielExists(materiel.Id))
-					{
-						return NotFound();
-					}
-					else
-					{
-						throw;
-					}
-				}
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    materiel.UserId = User.getUserId(_context);
+                    _context.Update(materiel);
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!MaterielExists(materiel.Id))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
 
-				return RedirectToAction(nameof(Index));
-			}
+                return RedirectToAction(nameof(Index));
+            }
 
-			ViewData["CategorieId"] = new SelectList(_context.Categories, "Id", "Id", materiel.CategorieId);
-			ViewData["ServiceId"] = new SelectList(_context.Services, "Id", "Id", materiel.ServiceId);
-			return View(materiel);
-		}
+            ViewData["CategorieId"] = new SelectList(_context.Categories, "Id", "Id", materiel.CategorieId);
+            ViewData["ServiceId"] = new SelectList(_context.Services, "Id", "Id", materiel.ServiceId);
+            return View(materiel);
+        }
 
-		// GET: Materiels/Delete/5
-		public async Task<IActionResult> Delete(int? id)
-		{
-			if (id == null || _context.Materiels == null)
-			{
-				return NotFound();
-			}
+        // GET: Materiels/Delete/5
+        public async Task<IActionResult> Delete(int? id)
+        {
+            if (id == null || _context.Materiels == null)
+            {
+                return NotFound();
+            }
 
-			var materiel = await _context.Materiels
-				.Include(m => m.Categorie)
-				.Include(m => m.Service)
-				.FirstOrDefaultAsync(m => m.Id == id);
-			if (materiel == null)
-			{
-				return NotFound();
-			}
+            var materiel = await _context.Materiels
+                .Include(m => m.Categorie)
+                .Include(m => m.Service)
+                .FirstOrDefaultAsync(m => m.Id == id);
+            if (materiel == null)
+            {
+                return NotFound();
+            }
 
-			return View(materiel);
-		}
+            return View(materiel);
+        }
 
-		// POST: Materiels/Delete/5
-		[HttpPost, ActionName("Delete")]
-		[ValidateAntiForgeryToken]
-		public async Task<IActionResult> DeleteConfirmed(int id)
-		{
-			if (_context.Materiels == null)
-			{
-				return Problem("Entity set 'AppDbContext.Materiels'  is null.");
-			}
+        // POST: Materiels/Delete/5
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(int id)
+        {
+            if (_context.Materiels == null)
+            {
+                return Problem("Entity set 'AppDbContext.Materiels'  is null.");
+            }
 
-			var materiel = await _context.Materiels.FindAsync(id);
-			if (materiel != null)
-			{
-				_context.Materiels.Remove(materiel);
-			}
+            var materiel = await _context.Materiels.FindAsync(id);
+            if (materiel != null)
+            {
+                _context.Materiels.Remove(materiel);
+            }
 
-			await _context.SaveChangesAsync();
-			return RedirectToAction(nameof(Index));
-		}
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+        }
 
-		private bool MaterielExists(int id)
-		{
-			return (_context.Materiels?.Any(e => e.Id == id)).GetValueOrDefault();
-		}
-	}
+        private bool MaterielExists(int id)
+        {
+            return (_context.Materiels?.Any(e => e.Id == id)).GetValueOrDefault();
+        }
+    }
 }

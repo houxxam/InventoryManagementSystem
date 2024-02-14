@@ -76,6 +76,8 @@ namespace InvWebApp.Controllers
             ViewBag.getUserCount = userCount;
         }
 
+
+
         // show last 5 categories
         private IActionResult lastFiveCategorie()
         {
@@ -84,7 +86,7 @@ namespace InvWebApp.Controllers
                 CategorieList = _context.Categories.OrderByDescending(x => x.Id).Take(5).ToList(),
                 ServiceList = _context.Services.OrderByDescending(x => x.Id).Take(5).ToList(),
                 MaterielList = _context.Materiels.Include(m => m.Categorie).Include(m => m.Service).OrderByDescending(x => x.Id).Take(5).ToList(),
-                LogList = _context.Logs.OrderByDescending(x => x.Id).Take(5).ToList(),
+                _LogList = _context.Logs.Include(u => u.User).OrderByDescending(x => x.Id).Take(5).ToList()
 
             };
 

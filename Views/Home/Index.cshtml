@@ -211,17 +211,34 @@
                     <strong class="card-title mb-3">Log</strong>
                 </div>
                 <div class="card-body">
-                    <div class="alert alert-success" role="alert">
-                        <strong>Admin</strong> Create Categorie <span>PC</span> !
-                    </div>
-                    <div class="alert alert-primary" role="alert">
-                        <strong>Admin</strong> Edit Categorie <span>RadioLogie</span> !
-                    </div>
-                    <div class="alert alert-danger" role="alert">
-                        <strong>Admin</strong> Delete Materiel <span>Kyocera 1060Dn</span> !
-                    </div>
+
+                    @foreach (var log in Model._LogList)
+                    {
+                        <div class="alert alert-@getColor(log.LogType)" role="alert">
+                            <strong>@log.User.UserName</strong>@Html.Raw( @log.LogMessage) <span>@log.LogDate</span> !
+                        </div>
+                    }
+                    
+                    
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+@functions {
+    private string getColor(string action)
+    {
+        switch (action)
+        {
+            case "insert":
+                return "success";
+            case "edit":
+                return "primary";
+            case "delete":
+                return "danger";
+            default:
+                return "secondary";
+        }
+    }
+}

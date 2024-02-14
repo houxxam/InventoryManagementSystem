@@ -64,6 +64,11 @@
                                     <span asp-validation-for="InventoryNumber" class="text-danger"></span>
                                 </div>
                                 <div class="form-group">
+                                    <label asp-for="MaterielOwner" class="control-label"></label>
+                                    <input asp-for="MaterielOwner" class="form-control" />
+                                    <span asp-validation-for="MaterielOwner" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
                                     <label asp-for="CategorieId" class="control-label"></label>
                                     <select asp-for="CategorieId" class="form-control" asp-items="ViewBag.CategorieId"></select>
                                     <span asp-validation-for="CategorieId" class="text-danger"></span>
