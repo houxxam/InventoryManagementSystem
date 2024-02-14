@@ -47,6 +47,7 @@
                                     <label asp-for="CategorieName" class="control-label mb-1">Categorie Name : </label>
                                     <input asp-for="CategorieName" class="form-control"/>
                                     <span asp-validation-for="CategorieName" class="text-danger"></span>
+                                    <p class="text-danger">@ViewBag.existData</p>
                                 </div>
                                 <div class="form-group">
                                     <input type="submit" value="Create" class="btn btn-primary mt-3"/>

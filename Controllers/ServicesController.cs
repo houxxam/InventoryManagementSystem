@@ -57,12 +57,26 @@ namespace InvWebApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,ServiceName,UserId")] Service service)
         {
+
             if (ModelState.IsValid)
             {
-                service.UserId = User.getUserId(_context);
-                _context.Add(service);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                try
+                {
+                    var existingServices = _context.Services.FirstOrDefault(u => u.ServiceName.ToLower() == service.ServiceName.ToLower());
+
+                    if (existingServices != null)
+                        return (ViewBag.existData = $"{service.ServiceName} allready Exist");
+
+                    service.UserId = User.getUserId(_context);
+                    _context.Add(service);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
+                }
+                catch
+                {
+                    ViewBag.existData = $"{service.ServiceName} allready Exist";
+                }
+
             }
             return View(service);
         }
@@ -95,17 +109,25 @@ namespace InvWebApp.Controllers
             {
                 return NotFound();
             }
+            var existingServices = _context.Services.FirstOrDefault(u => u.ServiceName.ToLower() == service.ServiceName.ToLower());
 
+            if (existingServices != null)
+            {
+                ModelState.AddModelError("ServiceName", "ServiceName already exists.");
+                return View(service);
+            }
             if (ModelState.IsValid)
             {
                 try
                 {
+
                     service.UserId = User.getUserId(_context);
                     _context.Update(service);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
+
                     if (!ServiceExists(service.Id))
                     {
                         return NotFound();

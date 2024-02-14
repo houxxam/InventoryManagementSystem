@@ -17,8 +17,8 @@ namespace InvWebApp.Controllers
         }
         public async Task<IActionResult> Index()
         {
-            return _context.Logs.Include(u => u.Id) != null ?
-                         View(await _context.Logs.Include(u => u.User).ToListAsync()) :
+            return _context.LogLists.Include(u => u.Id) != null ?
+                         View(await _context.LogLists.Include(u => u.User).ToListAsync()) :
                          Problem("Entity set 'AppDbContext.Categories'  is null.");
         }
     }

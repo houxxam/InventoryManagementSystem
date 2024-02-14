@@ -57,6 +57,7 @@
                                     <label asp-for="SerialNumber" class="control-label"></label>
                                     <input asp-for="SerialNumber" class="form-control" />
                                     <span asp-validation-for="SerialNumber" class="text-danger"></span>
+                                    <p class="text-danger">@ViewBag.existData</p>
                                 </div>
                                 <div class="form-group">
                                     <label asp-for="InventoryNumber" class="control-label"></label>

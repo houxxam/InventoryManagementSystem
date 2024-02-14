@@ -58,10 +58,18 @@ namespace InvWebApp.Controllers
         {
             if (ModelState.IsValid)
             {
-                categorie.UserId = User.getUserId(_context);
-                _context.Add(categorie);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                try
+                {
+                    categorie.UserId = User.getUserId(_context);
+                    _context.Add(categorie);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
+                }
+                catch
+                {
+                    ViewBag.existData = $"{categorie.CategorieName} allready Exist";
+                }
+
             }
             return View(categorie);
         }
@@ -104,6 +112,7 @@ namespace InvWebApp.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
+                    ViewBag.existData = $"{categorie.CategorieName} allready Exist";
                     if (!CategorieExists(categorie.Id))
                     {
                         return NotFound();

@@ -64,10 +64,18 @@ namespace InvWebApp.Controllers
         {
             if (ModelState.IsValid)
             {
-                materiel.UserId = User.getUserId(_context);
-                _context.Add(materiel);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                try
+                {
+                    materiel.UserId = User.getUserId(_context);
+                    _context.Add(materiel);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
+                }
+                catch
+                {
+                    ViewBag.existData = $"{materiel.SerialNumber} allready Exist";
+                }
+
             }
 
             ViewData["CategorieId"] =
@@ -131,6 +139,7 @@ namespace InvWebApp.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
+                    ViewBag.existData = $"{materiel.SerialNumber} allready Exist";
                     if (!MaterielExists(materiel.Id))
                     {
                         return NotFound();

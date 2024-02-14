@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace InvWebApp.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240211174434_add-logs")]
-    partial class addlogs
+    [Migration("20240214225823_create-database")]
+    partial class createdatabase
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -30,18 +30,29 @@ namespace InvWebApp.Migrations
 
                     b.Property<string>("CategorieName")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CategorieName")
+                        .IsUnique();
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Categories");
                 });
 
-            modelBuilder.Entity("InvWebApp.Models.Log", b =>
+            modelBuilder.Entity("InvWebApp.Models.LogList", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
+
+                    b.Property<DateTime>("LogDate")
+                        .HasColumnType("datetime(6)");
 
                     b.Property<string>("LogMessage")
                         .IsRequired()
@@ -58,7 +69,7 @@ namespace InvWebApp.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Logs");
+                    b.ToTable("LogLists");
                 });
 
             modelBuilder.Entity("InvWebApp.Models.Materiel", b =>
@@ -70,9 +81,6 @@ namespace InvWebApp.Migrations
                     b.Property<int>("CategorieId")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("datetime(6)");
-
                     b.Property<string>("InventoryNumber")
                         .IsRequired()
                         .HasColumnType("longtext");
@@ -81,18 +89,30 @@ namespace InvWebApp.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<string>("SerialNumber")
+                    b.Property<string>("MaterielOwner")
                         .IsRequired()
                         .HasColumnType("longtext");
 
+                    b.Property<string>("SerialNumber")
+                        .IsRequired()
+                        .HasColumnType("varchar(255)");
+
                     b.Property<int>("ServiceId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UserId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.HasIndex("CategorieId");
 
+                    b.HasIndex("SerialNumber")
+                        .IsUnique();
+
                     b.HasIndex("ServiceId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Materiels");
                 });
@@ -105,9 +125,17 @@ namespace InvWebApp.Migrations
 
                     b.Property<string>("ServiceName")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ServiceName")
+                        .IsUnique();
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Services");
                 });
@@ -119,23 +147,39 @@ namespace InvWebApp.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Email")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("longtext");
+                    b.Property<bool>("KeepLoggedIn")
+                        .HasColumnType("tinyint(1)");
 
                     b.Property<string>("Password")
                         .IsRequired()
                         .HasColumnType("longtext");
 
+                    b.Property<string>("UserName")
+                        .IsRequired()
+                        .HasColumnType("varchar(255)");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("UserName")
+                        .IsUnique();
 
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("InvWebApp.Models.Log", b =>
+            modelBuilder.Entity("InvWebApp.Models.Categorie", b =>
+                {
+                    b.HasOne("InvWebApp.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("InvWebApp.Models.LogList", b =>
                 {
                     b.HasOne("InvWebApp.Models.User", "User")
                         .WithMany()
@@ -160,9 +204,28 @@ namespace InvWebApp.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("InvWebApp.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Categorie");
 
                     b.Navigation("Service");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("InvWebApp.Models.Service", b =>
+                {
+                    b.HasOne("InvWebApp.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
                 });
 #pragma warning restore 612, 618
         }
