@@ -56,6 +56,15 @@ namespace InvWebApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,CategorieName,UserId")] Categorie categorie)
         {
+            // check categorie if is exists allready
+            var existingcategorie = _context.Categories.FirstOrDefault(u => u.CategorieName.ToLower() == categorie.CategorieName.ToLower());
+            // check Server if is allready exists before update
+            if (existingcategorie != null)
+            {
+                ModelState.AddModelError("CategorieName", "CategorieName already exists.");
+                return View(categorie);
+            }
+
             if (ModelState.IsValid)
             {
                 try
@@ -102,6 +111,14 @@ namespace InvWebApp.Controllers
                 return NotFound();
             }
 
+            // check categorie if is exists allready before update
+            var existingcategorie = _context.Categories.FirstOrDefault(u => u.CategorieName.ToLower() == categorie.CategorieName.ToLower());
+
+            if (existingcategorie != null)
+            {
+                ModelState.AddModelError("CategorieName", "CategorieName already exists.");
+                return View(categorie);
+            }
             if (ModelState.IsValid)
             {
                 try

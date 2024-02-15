@@ -62,6 +62,16 @@ namespace InvWebApp.Controllers
             [Bind("Id,MaterielName,CreatedDate,SerialNumber,InventoryNumber,MaterielOwner,CategorieId,ServiceId,UserId")]
             Materiel materiel)
         {
+
+            // check categorie if is exists allready before insert
+            var existingMateriel = _context.Materiels.FirstOrDefault(u => u.SerialNumber.ToLower() == materiel.SerialNumber.ToLower());
+
+            if (existingMateriel != null)
+            {
+                ModelState.AddModelError("SerialNumber", "SerialNumber already exists.");
+                //return View(materiel);
+            }
+
             if (ModelState.IsValid)
             {
                 try
@@ -78,9 +88,11 @@ namespace InvWebApp.Controllers
 
             }
 
+
+
             ViewData["CategorieId"] =
-                new SelectList(_context.Categories, "Id", "Id", materiel.CategorieId);
-            ViewData["ServiceId"] = new SelectList(_context.Services, "Id", "Id", materiel.ServiceId);
+                new SelectList(_context.Categories, "Id", "CategorieName", materiel.CategorieId);
+            ViewData["ServiceId"] = new SelectList(_context.Services, "Id", "ServiceName", materiel.ServiceId);
             return View(materiel);
         }
         [AllowAnonymous]
@@ -129,6 +141,15 @@ namespace InvWebApp.Controllers
                 return NotFound();
             }
 
+            // check categorie if is exists allready before update
+            var existingMateriel = _context.Materiels.FirstOrDefault(u => u.SerialNumber.ToLower() == materiel.SerialNumber.ToLower());
+
+            if (existingMateriel != null)
+            {
+                ModelState.AddModelError("SerialNumber", "SerialNumber already exists.");
+
+            }
+
             if (ModelState.IsValid)
             {
                 try
@@ -139,7 +160,7 @@ namespace InvWebApp.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    ViewBag.existData = $"{materiel.SerialNumber} allready Exist";
+
                     if (!MaterielExists(materiel.Id))
                     {
                         return NotFound();
@@ -153,8 +174,8 @@ namespace InvWebApp.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-            ViewData["CategorieId"] = new SelectList(_context.Categories, "Id", "Id", materiel.CategorieId);
-            ViewData["ServiceId"] = new SelectList(_context.Services, "Id", "Id", materiel.ServiceId);
+            ViewData["CategorieId"] = new SelectList(_context.Categories, "Id", "CategorieName", materiel.CategorieId);
+            ViewData["ServiceId"] = new SelectList(_context.Services, "Id", "ServiceName", materiel.ServiceId);
             return View(materiel);
         }
 

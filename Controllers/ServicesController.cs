@@ -57,15 +57,21 @@ namespace InvWebApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,ServiceName,UserId")] Service service)
         {
+            var existingServices = _context.Services.FirstOrDefault(u => u.ServiceName.ToLower() == service.ServiceName.ToLower());
+            // check Server if is allready exists before update
+            if (existingServices != null)
+            {
+                ModelState.AddModelError("ServiceName", "ServiceName already exists.");
+                return View(service);
+            }
 
             if (ModelState.IsValid)
             {
                 try
                 {
-                    var existingServices = _context.Services.FirstOrDefault(u => u.ServiceName.ToLower() == service.ServiceName.ToLower());
 
-                    if (existingServices != null)
-                        return (ViewBag.existData = $"{service.ServiceName} allready Exist");
+                    //if (existingServices != null)
+                    //    return (ViewBag.existData = $"{service.ServiceName} allready Exist");
 
                     service.UserId = User.getUserId(_context);
                     _context.Add(service);
@@ -110,7 +116,7 @@ namespace InvWebApp.Controllers
                 return NotFound();
             }
             var existingServices = _context.Services.FirstOrDefault(u => u.ServiceName.ToLower() == service.ServiceName.ToLower());
-
+            // check Server if is allready exists before update
             if (existingServices != null)
             {
                 ModelState.AddModelError("ServiceName", "ServiceName already exists.");
@@ -183,6 +189,7 @@ namespace InvWebApp.Controllers
         {
             return (_context.Services?.Any(e => e.Id == id)).GetValueOrDefault();
         }
+
 
     }
 }
