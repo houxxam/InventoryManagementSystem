@@ -1,4 +1,5 @@
 ﻿using InvWebApp.Data;
+using InvWebApp.Extentions;
 using InvWebApp.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -19,9 +20,16 @@ namespace InvWebApp.Controllers
 		// GET: Users
 		public async Task<IActionResult> Index()
 		{
-			return _context.Users != null ?
-						View(await _context.Users.ToListAsync()) :
-						Problem("Entity set 'AppDbContext.Users'  is null.");
+			var userId = User.getUserId(_context);
+			User user = await _context.Users.FirstOrDefaultAsync(u => u.Id == userId);
+			if (user != null)
+			{
+				return View(new List<User> { user });
+			}
+			else
+			{
+				return NotFound(); // Or handle the case where user is not found
+			}
 		}
 
 		// GET: Users/Details/5
@@ -99,8 +107,8 @@ namespace InvWebApp.Controllers
 
 
 					user.Password = HashPassword(user.Password);
-					
-                    _context.Update(user);
+
+					_context.Update(user);
 					await _context.SaveChangesAsync();
 				}
 				catch (DbUpdateConcurrencyException)
@@ -163,11 +171,11 @@ namespace InvWebApp.Controllers
 
 
 
-        // Hashing Passwords using bcrypt
-        public string HashPassword(string password)
-        {
-            var hashedPassword = BCrypt.Net.BCrypt.HashPassword(password);
-            return hashedPassword;
-        }
-    }
+		// Hashing Passwords using bcrypt
+		public string HashPassword(string password)
+		{
+			var hashedPassword = BCrypt.Net.BCrypt.HashPassword(password);
+			return hashedPassword;
+		}
+	}
 }
