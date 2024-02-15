@@ -25,9 +25,9 @@
 					<span class="symbol-input100">
 						<i class="fa fa-user" aria-hidden="true"></i>
 					</span>
-					<span asp-validation-for="UserName"></span>
+					
 				</div>
-
+				
 				<div class="wrap-input100 validate-input" data-validate="Password is required">
 
 
@@ -36,9 +36,14 @@
 					<span class="symbol-input100">
 						<i class="fa fa-lock" aria-hidden="true"></i>
 					</span>
+					
+				</div>
+				
+				<div class="@ViewBag._class" role="alert">
+					<span asp-validation-for="UserName"></span>
 					<span asp-validation-for="Password"></span>
 				</div>
-
+				
 			
 
 				<div class="container-login100-form-btn">

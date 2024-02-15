@@ -2,7 +2,6 @@
 using InvWebApp.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -36,12 +35,12 @@ namespace InvWebApp.Controllers
 
 			string hashed = HashPassword(UserLogin.Password);
 
-            if (user != null)
+			if (user != null)
 			{
 				//if (UserLogin.UserName == user.UserName && UserLogin.Password == user.Password)
-               
+
 				if (UserLogin.UserName == user.UserName && VerifyPassword(UserLogin.Password, hashed))
-                {
+				{
 					List<Claim> claims = new List<Claim>
 					{
 					new Claim(ClaimTypes.NameIdentifier, UserLogin.UserName)
@@ -57,9 +56,9 @@ namespace InvWebApp.Controllers
 						new ClaimsPrincipal(claimIdentity), properties);
 
 
-                   
-                    
-                    return RedirectToAction("Index", "Home");
+
+
+					return RedirectToAction("Index", "Home");
 				}
 			}
 
@@ -69,73 +68,83 @@ namespace InvWebApp.Controllers
 
 
 
-        public IActionResult Register()
-        {
-            return View();
-        }
+		public IActionResult Register()
+		{
+			ViewBag._class = "alert alert-danger d-none";
+			return View();
+		}
 
-        [HttpPost]
-        public IActionResult Register(User model)
-        {
-            if (!ModelState.IsValid)
-            {
-                return View(model);
-            }
+		[HttpPost]
+		public IActionResult Register(User model)
+		{
+			ViewBag._class = "alert alert-danger d-none";
+			// check username if is exists allready
+			var existingUser = _context.Users.FirstOrDefault(u => u.UserName.ToLower() == model.UserName.ToLower());
+			// check Server if is allready exists before update
+			if (existingUser != null)
+			{
+				ModelState.AddModelError("UserName", "Username already exists.");
+				ViewBag._class = "alert alert-danger d-block";
+			}
+			if (!ModelState.IsValid)
+			{
+				return View(model);
+			}
 
-            // Hash the password
-            string hashedPassword = HashPassword(model.Password);
+			// Hash the password
+			string hashedPassword = HashPassword(model.Password);
 
-            // Create a user object
-            var newUser = new User
-            {
-                UserName = model.UserName,
-                // Other properties as needed
-                Password = hashedPassword // Store the hashed password
-            };
+			// Create a user object
+			var newUser = new User
+			{
+				UserName = model.UserName,
+				// Other properties as needed
+				Password = hashedPassword // Store the hashed password
+			};
 
-            // Call the user service to add the new user to the database
-            _context.Users.Add(newUser);
-            _context.SaveChanges();
+			// Call the user service to add the new user to the database
+			_context.Users.Add(newUser);
+			_context.SaveChanges();
 
-            return RedirectToAction("Login", "Admin");
-        }
+			return RedirectToAction("Login", "Admin");
+		}
 
 
 
-        // Hashing Passwords using bcrypt
-        public string HashPassword(string password)
-        {
-            var hashedPassword = BCrypt.Net.BCrypt.HashPassword(password);
-            return hashedPassword;
-        }
+		// Hashing Passwords using bcrypt
+		public string HashPassword(string password)
+		{
+			var hashedPassword = BCrypt.Net.BCrypt.HashPassword(password);
+			return hashedPassword;
+		}
 
-        // Validating Passwords against hashed password
-        public bool VerifyPassword(string password, string hashedPassword)
-        {
-            return BCrypt.Net.BCrypt.Verify(password, hashedPassword);
-        }
+		// Validating Passwords against hashed password
+		public bool VerifyPassword(string password, string hashedPassword)
+		{
+			return BCrypt.Net.BCrypt.Verify(password, hashedPassword);
+		}
 
-        // Generating JWT Token
-        public string GenerateJwtToken(User user)
-        {
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes("Sceinfo@01");
+		// Generating JWT Token
+		public string GenerateJwtToken(User user)
+		{
+			var tokenHandler = new JwtSecurityTokenHandler();
+			var key = Encoding.ASCII.GetBytes("Sceinfo@01");
 
-            var tokenDescriptor = new SecurityTokenDescriptor
-            {
-                Subject = new ClaimsIdentity(new Claim[]
-                {
-            new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+			var tokenDescriptor = new SecurityTokenDescriptor
+			{
+				Subject = new ClaimsIdentity(new Claim[]
+				{
+			new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
                     // Add more claims as needed
                 }),
-                Expires = DateTime.UtcNow.AddHours(1), // Token expiration time
-                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
-            };
+				Expires = DateTime.UtcNow.AddHours(1), // Token expiration time
+				SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+			};
 
-            var token = tokenHandler.CreateToken(tokenDescriptor);
-            return tokenHandler.WriteToken(token);
-        }
+			var token = tokenHandler.CreateToken(tokenDescriptor);
+			return tokenHandler.WriteToken(token);
+		}
 
 
-    }
+	}
 }
