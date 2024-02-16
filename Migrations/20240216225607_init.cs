@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace InvWebApp.Migrations
 {
     /// <inheritdoc />
-    public partial class createdatabase : Migration
+    public partial class init : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -21,7 +21,7 @@ namespace InvWebApp.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    UserName = table.Column<string>(type: "varchar(255)", nullable: false)
+                    UserName = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Email = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
@@ -41,7 +41,7 @@ namespace InvWebApp.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    CategorieName = table.Column<string>(type: "varchar(255)", nullable: false)
+                    CategorieName = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     UserId = table.Column<int>(type: "int", nullable: false)
                 },
@@ -88,7 +88,7 @@ namespace InvWebApp.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    ServiceName = table.Column<string>(type: "varchar(255)", nullable: false)
+                    ServiceName = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     UserId = table.Column<int>(type: "int", nullable: false)
                 },
@@ -105,6 +105,28 @@ namespace InvWebApp.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
+                name: "serviceGroups",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    GroupName = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    ServiceId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_serviceGroups", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_serviceGroups_Services_ServiceId",
+                        column: x => x.ServiceId,
+                        principalTable: "Services",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
                 name: "Materiels",
                 columns: table => new
                 {
@@ -112,14 +134,16 @@ namespace InvWebApp.Migrations
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     MaterielName = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    SerialNumber = table.Column<string>(type: "varchar(255)", nullable: false)
+                    CreatedDate = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    SerialNumber = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    InventoryNumber = table.Column<string>(type: "longtext", nullable: false)
+                    InventoryNumber = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    MaterielOwner = table.Column<string>(type: "longtext", nullable: false)
+                    MaterielOwner = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     CategorieId = table.Column<int>(type: "int", nullable: false),
                     ServiceId = table.Column<int>(type: "int", nullable: false),
+                    ServiceGroupId = table.Column<int>(type: "int", nullable: false),
                     UserId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -143,14 +167,14 @@ namespace InvWebApp.Migrations
                         principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Materiels_serviceGroups_ServiceGroupId",
+                        column: x => x.ServiceGroupId,
+                        principalTable: "serviceGroups",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Categories_CategorieName",
-                table: "Categories",
-                column: "CategorieName",
-                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Categories_UserId",
@@ -168,10 +192,9 @@ namespace InvWebApp.Migrations
                 column: "CategorieId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Materiels_SerialNumber",
+                name: "IX_Materiels_ServiceGroupId",
                 table: "Materiels",
-                column: "SerialNumber",
-                unique: true);
+                column: "ServiceGroupId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Materiels_ServiceId",
@@ -184,21 +207,14 @@ namespace InvWebApp.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Services_ServiceName",
-                table: "Services",
-                column: "ServiceName",
-                unique: true);
+                name: "IX_serviceGroups_ServiceId",
+                table: "serviceGroups",
+                column: "ServiceId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Services_UserId",
                 table: "Services",
                 column: "UserId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Users_UserName",
-                table: "Users",
-                column: "UserName",
-                unique: true);
         }
 
         /// <inheritdoc />
@@ -212,6 +228,9 @@ namespace InvWebApp.Migrations
 
             migrationBuilder.DropTable(
                 name: "Categories");
+
+            migrationBuilder.DropTable(
+                name: "serviceGroups");
 
             migrationBuilder.DropTable(
                 name: "Services");

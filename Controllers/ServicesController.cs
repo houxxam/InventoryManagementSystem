@@ -72,7 +72,7 @@ namespace InvWebApp.Controllers
 
                     //if (existingServices != null)
                     //    return (ViewBag.existData = $"{service.ServiceName} allready Exist");
-
+                    service.ServiceName = service.ServiceName.ToUpper();
                     service.UserId = User.getUserId(_context);
                     _context.Add(service);
                     await _context.SaveChangesAsync();
@@ -86,6 +86,9 @@ namespace InvWebApp.Controllers
             }
             return View(service);
         }
+
+
+
 
         // GET: Services/Edit/5
         public async Task<IActionResult> Edit(int? id)
@@ -126,7 +129,7 @@ namespace InvWebApp.Controllers
             {
                 try
                 {
-
+                    service.ServiceName = service.ServiceName.ToUpper();
                     service.UserId = User.getUserId(_context);
                     _context.Update(service);
                     await _context.SaveChangesAsync();

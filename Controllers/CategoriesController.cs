@@ -69,6 +69,7 @@ namespace InvWebApp.Controllers
             {
                 try
                 {
+                    categorie.CategorieName = categorie.CategorieName.ToUpper();
                     categorie.UserId = User.getUserId(_context);
                     _context.Add(categorie);
                     await _context.SaveChangesAsync();
@@ -123,6 +124,7 @@ namespace InvWebApp.Controllers
             {
                 try
                 {
+                    categorie.CategorieName = categorie.CategorieName.ToUpper();
                     categorie.UserId = User.getUserId(_context);
                     _context.Update(categorie);
                     await _context.SaveChangesAsync();

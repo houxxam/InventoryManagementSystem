@@ -21,7 +21,7 @@ namespace InvWebApp.Controllers
         // GET: Materiels
         public async Task<IActionResult> Index()
         {
-            var appDbContext = _context.Materiels.OrderByDescending(m => m.Id).Include(m => m.Categorie).Include(m => m.Service).Include(m => m.serviceGroup);
+            var appDbContext = _context.Materiels.Include(s => s.Service).Include(g => g.serviceGroup).Include(c => c.Categorie);
             return View(await appDbContext.ToListAsync());
         }
 
@@ -79,6 +79,7 @@ namespace InvWebApp.Controllers
             {
                 try
                 {
+                    materiel.CreatedDate = DateTime.Now;
                     materiel.UserId = User.getUserId(_context);
                     _context.Add(materiel);
                     await _context.SaveChangesAsync();
@@ -129,7 +130,7 @@ namespace InvWebApp.Controllers
             {
                 return NotFound();
             }
-
+            ViewData["groupId"] = new SelectList(_context.serviceGroups, "Id", "GroupName", materiel.ServiceGroupId);
             ViewData["CategorieId"] = new SelectList(_context.Categories, "Id", "CategorieName", materiel.CategorieId);
             ViewData["ServiceId"] = new SelectList(_context.Services, "Id", "ServiceName", materiel.ServiceId);
             return View(materiel);
@@ -141,7 +142,7 @@ namespace InvWebApp.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id,
-            [Bind("Id,MaterielName,CreatedDate,SerialNumber,InventoryNumber,MaterielOwner,CategorieId,ServiceId,UserId")]
+            [Bind("Id,MaterielName,CreatedDate,SerialNumber,InventoryNumber,MaterielOwner,CategorieId,ServiceId,ServiceGroup,UserId")]
             Materiel materiel)
         {
             if (id != materiel.Id)

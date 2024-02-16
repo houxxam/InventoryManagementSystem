@@ -75,8 +75,10 @@ namespace InvWebApp.Migrations
                     b.Property<int>("CategorieId")
                         .HasColumnType("int");
 
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime(6)");
+
                     b.Property<string>("InventoryNumber")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<string>("MaterielName")
@@ -84,7 +86,6 @@ namespace InvWebApp.Migrations
                         .HasColumnType("longtext");
 
                     b.Property<string>("MaterielOwner")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<string>("SerialNumber")

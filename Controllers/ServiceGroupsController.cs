@@ -57,6 +57,7 @@ namespace InvWebApp.Controllers
         {
             if (ModelState.IsValid)
             {
+                serviceGroup.GroupName = serviceGroup.GroupName.ToUpper();
                 _context.Add(serviceGroup);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -98,6 +99,8 @@ namespace InvWebApp.Controllers
             {
                 try
                 {
+
+                    serviceGroup.GroupName = serviceGroup.GroupName.ToUpper();
                     _context.Update(serviceGroup);
                     await _context.SaveChangesAsync();
                 }

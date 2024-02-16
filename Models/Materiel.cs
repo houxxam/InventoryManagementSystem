@@ -6,10 +6,10 @@ namespace InvWebApp.Models
     {
         public int Id { get; set; }
         public string MaterielName { get; set; }
-        public DateTime CreatedDate => DateTime.Now;
+        public DateTime CreatedDate { get; set; }
         public string SerialNumber { get; set; }
-        public string InventoryNumber { get; set; }
-        public string MaterielOwner { get; set; }
+        public string? InventoryNumber { get; set; }
+        public string? MaterielOwner { get; set; }
         public int CategorieId { get; set; }
         public int ServiceId { get; set; }
         public int ServiceGroupId { get; set; }

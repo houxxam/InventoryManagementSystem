@@ -38,74 +38,83 @@
                 <strong class="card-title mb-3">Materiel</strong>
             </div>
             <div class="card-body">
-                <table class="table" id="myDatatable">
-                    <thead>
-                        <tr>
-                            <th>#</th>
-                            <th>
-                                Materiel Name
-                            </th>
-                            <th>
-                                Created Date
-                            </th>
-                            <th>
-                                Serial Number
-                            </th>
-                            <th>
-                                Inventory Number
-                            </th>
-                            <th>
-                                Categorie
-                            </th>
-                            <th>
-                                Service
-                            </th>
-                            <th>
-                                Group
-                            </th>
-                            <th>Owner</th>
-                            <th></th>
-                            <th></th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var item in Model)
-                        {
+                @if (Model != null)
+                {
+
+
+                    <table class="table" id="myDatatable">
+                        <thead>
                             <tr>
-                                <td>@Html.DisplayFor(modelItem => item.Id)</td>
-                                <td>
-                                    <a class="table-name-a" href="/Materiels/Details/@item.Id">@Html.DisplayFor(modelItem => item.MaterielName)</a>
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.CreatedDate)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.SerialNumber)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.InventoryNumber)
-                                </td>
-                               
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Categorie.CategorieName)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Service.ServiceName)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.serviceGroup.GroupName)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.MaterielOwner)
-                                </td>
-                                <td><a class="btn btn-success" asp-action="Edit" asp-route-id="@item.Id"><i class="fa-solid fa-pen-to-square"></i>&nbsp;Edit</a> </td>
-                                <td> <a class="btn btn-primary" asp-action="Details" asp-route-id="@item.Id"><i class="fa-solid fa-circle-info"></i>&nbsp;Details</a></td>
-                                <td> <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id"><i class="fa-solid fa-trash"></i>&nbsp;Delete</a></td>
+                                <th>#</th>
+                                <th>
+                                    Materiel Name
+                                </th>
+                                <th>
+                                    Created Date
+                                </th>
+                                <th>
+                                    Serial Number
+                                </th>
+                                <th>
+                                    Inventory Number
+                                </th>
+                                <th>
+                                    Categorie
+                                </th>
+                                <th>
+                                    Service
+                                </th>
+                                <th>
+                                    Group
+                                </th>
+                                <th>Owner</th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
                             </tr>
-                        }
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td>@Html.DisplayFor(modelItem => item.Id)</td>
+                                    <td>
+                                        <a class="table-name-a" href="/Materiels/Details/@item.Id">@Html.DisplayFor(modelItem => item.MaterielName)</a>
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.CreatedDate)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.SerialNumber)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.InventoryNumber)
+                                    </td>
+
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Categorie.CategorieName)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Service.ServiceName)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.serviceGroup.GroupName)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.MaterielOwner)
+                                    </td>
+                                    <td><a class="btn btn-success" asp-action="Edit" asp-route-id="@item.Id"><i class="fa-solid fa-pen-to-square"></i>&nbsp;Edit</a> </td>
+                                    <td> <a class="btn btn-primary" asp-action="Details" asp-route-id="@item.Id"><i class="fa-solid fa-circle-info"></i>&nbsp;Details</a></td>
+                                    <td> <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id"><i class="fa-solid fa-trash"></i>&nbsp;Delete</a></td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                }
+                else
+                {
+                    <p>no data</p>
+                }
             </div>
         </div>
     </div>

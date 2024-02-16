@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace InvWebApp.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240214233743_create-database2")]
-    partial class createdatabase2
+    [Migration("20240216225607_init")]
+    partial class init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -78,8 +78,10 @@ namespace InvWebApp.Migrations
                     b.Property<int>("CategorieId")
                         .HasColumnType("int");
 
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime(6)");
+
                     b.Property<string>("InventoryNumber")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<string>("MaterielName")
@@ -87,12 +89,14 @@ namespace InvWebApp.Migrations
                         .HasColumnType("longtext");
 
                     b.Property<string>("MaterielOwner")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<string>("SerialNumber")
                         .IsRequired()
                         .HasColumnType("longtext");
+
+                    b.Property<int>("ServiceGroupId")
+                        .HasColumnType("int");
 
                     b.Property<int>("ServiceId")
                         .HasColumnType("int");
@@ -103,6 +107,8 @@ namespace InvWebApp.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("CategorieId");
+
+                    b.HasIndex("ServiceGroupId");
 
                     b.HasIndex("ServiceId");
 
@@ -129,6 +135,26 @@ namespace InvWebApp.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Services");
+                });
+
+            modelBuilder.Entity("InvWebApp.Models.ServiceGroup", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<string>("GroupName")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<int>("ServiceId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ServiceId");
+
+                    b.ToTable("serviceGroups");
                 });
 
             modelBuilder.Entity("InvWebApp.Models.User", b =>
@@ -186,6 +212,12 @@ namespace InvWebApp.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("InvWebApp.Models.ServiceGroup", "serviceGroup")
+                        .WithMany()
+                        .HasForeignKey("ServiceGroupId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("InvWebApp.Models.Service", "Service")
                         .WithMany()
                         .HasForeignKey("ServiceId")
@@ -203,6 +235,8 @@ namespace InvWebApp.Migrations
                     b.Navigation("Service");
 
                     b.Navigation("User");
+
+                    b.Navigation("serviceGroup");
                 });
 
             modelBuilder.Entity("InvWebApp.Models.Service", b =>
@@ -214,6 +248,17 @@ namespace InvWebApp.Migrations
                         .IsRequired();
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("InvWebApp.Models.ServiceGroup", b =>
+                {
+                    b.HasOne("InvWebApp.Models.Service", "Service")
+                        .WithMany()
+                        .HasForeignKey("ServiceId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Service");
                 });
 #pragma warning restore 612, 618
         }

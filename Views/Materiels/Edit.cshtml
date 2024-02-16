@@ -44,40 +44,48 @@
                                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                                 <input type="hidden" asp-for="Id" />
                                 <div class="form-group">
-                                    <label asp-for="MaterielName" class="control-label"></label>
+                                    <label asp-for="MaterielName" class="control-label">Materiel Name</label>
                                     <input asp-for="MaterielName" class="form-control" />
                                     <span asp-validation-for="MaterielName" class="text-danger"></span>
                                 </div>
                                 <div class="form-group">
-                                    <label asp-for="CreatedDate" class="control-label"></label>
+                                    <label asp-for="CreatedDate" class="control-label">Created Date</label>
                                     <input asp-for="CreatedDate" class="form-control" readonly/>
                                     <span asp-validation-for="CreatedDate" class="text-danger"></span>
                                 </div>
                                 <div class="form-group">
-                                    <label asp-for="SerialNumber" class="control-label"></label>
+                                    <label asp-for="SerialNumber" class="control-label">SerialNumber</label>
                                     <input asp-for="SerialNumber" class="form-control" />
                                     <span asp-validation-for="SerialNumber" class="text-danger"></span>
                                     <p class="text-danger">@ViewBag.existData</p>
                                 </div>
                                 <div class="form-group">
-                                    <label asp-for="InventoryNumber" class="control-label"></label>
+                                    <label asp-for="InventoryNumber" class="control-label">Inventory Number</label>
                                     <input asp-for="InventoryNumber" class="form-control" />
                                     <span asp-validation-for="InventoryNumber" class="text-danger"></span>
                                 </div>
+                                
                                 <div class="form-group">
-                                    <label asp-for="MaterielOwner" class="control-label"></label>
-                                    <input asp-for="MaterielOwner" class="form-control" />
-                                    <span asp-validation-for="MaterielOwner" class="text-danger"></span>
-                                </div>
-                                <div class="form-group">
-                                    <label asp-for="CategorieId" class="control-label"></label>
+                                    <label asp-for="CategorieId" class="control-label">Categorie</label>
                                     <select asp-for="CategorieId" class="form-control" asp-items="ViewBag.CategorieId"></select>
                                     <span asp-validation-for="CategorieId" class="text-danger"></span>
                                 </div>
+                                <div class="row">
+                                    <div class="form-group col-sm-6">
+                                        <label asp-for="ServiceId" class="control-label">Service</label>
+                                        <select asp-for="ServiceId" class="form-control" asp-items="ViewBag.ServiceId"></select>
+                                        <span asp-validation-for="ServiceId" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group col-sm-6">
+                                        <label asp-for="serviceGroup" class="control-label">Group</label>
+                                        <select asp-for="serviceGroup" class="form-control" asp-items="ViewBag.groupId"></select>
+                                        <span asp-validation-for="serviceGroup" class="text-danger"></span>
+                                    </div>
+                                </div>
                                 <div class="form-group">
-                                    <label asp-for="ServiceId" class="control-label"></label>
-                                    <select asp-for="ServiceId" class="form-control" asp-items="ViewBag.ServiceId"></select>
-                                    <span asp-validation-for="ServiceId" class="text-danger"></span>
+                                    <label asp-for="MaterielOwner" class="control-label">Owner</label>
+                                    <input asp-for="MaterielOwner" class="form-control" />
+                                    <span asp-validation-for="MaterielOwner" class="text-danger"></span>
                                 </div>
                                 <div class="form-group mt-3">
                                     <input type="submit" value="Save" class="btn btn-primary" />
