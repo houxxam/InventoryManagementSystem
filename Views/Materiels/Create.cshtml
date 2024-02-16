@@ -48,35 +48,37 @@
                                         <input asp-for="MaterielName" class="form-control" />
                                     <span asp-validation-for="MaterielName" class="text-danger"></span>
                                 </div>
-                                @* <div class="form-group">
-                                    <label asp-for="CreatedDate" class="control-label"></label>
-                                    <input asp-for="CreatedDate" class="form-control"  />
-                                    
-                                    <span asp-validation-for="CreatedDate" class="text-danger"></span>
-                                </div> *@
+                               
                                 <div class="form-group">
-                                    <label asp-for="SerialNumber" class="control-label"></label>
+                                    <label asp-for="SerialNumber" class="control-label">Serial Number</label>
                                     <input asp-for="SerialNumber" class="form-control" />
                                     <span asp-validation-for="SerialNumber" class="text-danger"></span>
                                    
                                 </div>
                                 <div class="form-group">
-                                    <label asp-for="InventoryNumber" class="control-label"></label>
+                                    <label asp-for="InventoryNumber" class="control-label">Inventory Number</label>
                                     <input asp-for="InventoryNumber" class="form-control" />
                                     <span asp-validation-for="InventoryNumber" class="text-danger"></span>
                                 </div>
                                 <div class="form-group">
-                                    <label asp-for="MaterielOwner" class="control-label"></label>
-                                    <input asp-for="MaterielOwner" class="form-control" />
-                                    <span asp-validation-for="MaterielOwner" class="text-danger"></span>
-                                </div>
-                                <div class="form-group">
-                                    <label asp-for="CategorieId" class="control-label"></label>
+                                    <label asp-for="CategorieId" class="control-label">Categorie Name</label>
                                     <select asp-for="CategorieId" class="form-control" asp-items="ViewBag.CategorieId"></select>
                                 </div>
+                                <div class="row">
+                                    <div class="form-group col-sm-6">
+                                        <label asp-for="ServiceId" class="control-label">Service Name</label>
+                                        <select id="serviceDropdown" asp-for="ServiceId" class="form-control" asp-items="ViewBag.ServiceId"></select>
+                                    </div>
+
+                                    <div class="form-group col-sm-6">
+                                        <label asp-for="ServiceGroupId" class="control-label">Group Name</label>
+                                        <select id="groupDropdown" asp-for="ServiceGroupId" class="form-control"></select>
+                                    </div>
+                                </div>
                                 <div class="form-group">
-                                    <label asp-for="ServiceId" class="control-label"></label>
-                                    <select asp-for="ServiceId" class="form-control" asp-items="ViewBag.ServiceId"></select>
+                                    <label asp-for="MaterielOwner" class="control-label">Materiel Owner</label>
+                                    <input asp-for="MaterielOwner" class="form-control" />
+                                    <span asp-validation-for="MaterielOwner" class="text-danger"></span>
                                 </div>
                                 <div class="form-group mt-3">
                                     <input type="submit" value="Create" class="btn btn-primary" />
@@ -97,4 +99,5 @@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    
 }

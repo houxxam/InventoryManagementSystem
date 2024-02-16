@@ -12,6 +12,7 @@ namespace InvWebApp.Models
         public string MaterielOwner { get; set; }
         public int CategorieId { get; set; }
         public int ServiceId { get; set; }
+        public int ServiceGroupId { get; set; }
         public int UserId { get; set; }
         [ForeignKey("CategorieId")]
         public Categorie? Categorie { get; set; }
@@ -19,5 +20,8 @@ namespace InvWebApp.Models
         public Service? Service { get; set; }
         [ForeignKey("UserId")]
         public User? User { get; set; }
+
+        [ForeignKey("ServiceGroupId")]
+        public ServiceGroup? serviceGroup { get; set; }
     }
 }

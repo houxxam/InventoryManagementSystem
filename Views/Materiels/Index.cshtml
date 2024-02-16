@@ -74,7 +74,7 @@
                             <tr>
                                 <td>@Html.DisplayFor(modelItem => item.Id)</td>
                                 <td>
-                                    @Html.DisplayFor(modelItem => item.MaterielName)
+                                    <a href="/Materiels/Details/@item.Id">@Html.DisplayFor(modelItem => item.MaterielName)</a>
                                 </td>
                                 <td>
                                     @Html.DisplayFor(modelItem => item.CreatedDate)

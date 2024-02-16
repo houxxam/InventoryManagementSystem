@@ -15,6 +15,7 @@ namespace InvWebApp.Data
         public DbSet<Categorie> Categories { get; set; }
         public DbSet<Service> Services { get; set; }
         public DbSet<LogList> LogLists { get; set; }
+        public DbSet<ServiceGroup> serviceGroups { get; set; }
 
 
     }

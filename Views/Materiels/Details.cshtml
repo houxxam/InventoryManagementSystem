@@ -35,46 +35,55 @@
         <hr />
         <dl class="row">
             <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.MaterielName)
+                Materiel Name :
             </dt>
             <dd class="col-sm-10">
                 @Html.DisplayFor(model => model.MaterielName)
             </dd>
             <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.CreatedDate)
+                Creation Date :
             </dt>
             <dd class="col-sm-10">
                 @Html.DisplayFor(model => model.CreatedDate)
             </dd>
             <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.SerialNumber)
+                Serial Number :
             </dt>
             <dd class="col-sm-10">
                 @Html.DisplayFor(model => model.SerialNumber)
             </dd>
             <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.InventoryNumber)
+                Inventory Number :
             </dt>
             <dd class="col-sm-10">
                 @Html.DisplayFor(model => model.InventoryNumber)
             </dd>
             <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.MaterielOwner)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.MaterielOwner)
-            </dd>
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.Categorie)
+                Categorie :
             </dt>
             <dd class="col-sm-10">
                 @Html.DisplayFor(model => model.Categorie.CategorieName)
             </dd>
+            <div class="row">
+                <dt class="col-sm-2">
+                    Service :
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.Service.ServiceName)
+                </dd>
+                <dt class="col-sm-2">
+                    Service Group:
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.serviceGroup.GroupName)
+                </dd>
+            </div>
+            
             <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.Service)
+                @Html.DisplayNameFor(model => model.MaterielOwner)
             </dt>
             <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.Service.ServiceName)
+                @Html.DisplayFor(model => model.MaterielOwner)
             </dd>
         </dl>
     </div>

@@ -36,6 +36,7 @@ namespace InvWebApp.Controllers
             var materiel = await _context.Materiels
                 .Include(m => m.Categorie)
                 .Include(m => m.Service)
+                .Include(m => m.serviceGroup)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (materiel == null)
             {
@@ -59,12 +60,14 @@ namespace InvWebApp.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(
-            [Bind("Id,MaterielName,CreatedDate,SerialNumber,InventoryNumber,MaterielOwner,CategorieId,ServiceId,UserId")]
+            [Bind("Id,MaterielName,CreatedDate,SerialNumber,InventoryNumber,MaterielOwner,CategorieId,ServiceId,ServiceGroupId,UserId")]
             Materiel materiel)
         {
 
             // check categorie if is exists allready before insert
             var existingMateriel = _context.Materiels.FirstOrDefault(u => u.SerialNumber.ToLower() == materiel.SerialNumber.ToLower());
+
+
 
             if (existingMateriel != null)
             {
@@ -87,13 +90,18 @@ namespace InvWebApp.Controllers
                 }
 
             }
-
+            if (materiel.ServiceId != null)
+            {
+                ViewBag.Groups = await _context.serviceGroups.Where(s => s.ServiceId == materiel.ServiceId).ToListAsync();
+            }
 
 
             ViewData["CategorieId"] =
                 new SelectList(_context.Categories, "Id", "CategorieName", materiel.CategorieId);
             ViewData["ServiceId"] = new SelectList(_context.Services, "Id", "ServiceName", materiel.ServiceId);
             return View(materiel);
+
+
         }
         [AllowAnonymous]
         [HttpPost]
@@ -222,6 +230,14 @@ namespace InvWebApp.Controllers
         private bool MaterielExists(int id)
         {
             return (_context.Materiels?.Any(e => e.Id == id)).GetValueOrDefault();
+        }
+
+        [HttpGet]
+        public IActionResult GetGroups(int serviceId)
+        {
+            // Retrieve groups for the selected service
+            var groups = _context.serviceGroups.Where(s => s.ServiceId == serviceId).Select(g => new { Id = g.Id, GroupName = g.GroupName }).ToList();
+            return Json(groups);
         }
     }
 }

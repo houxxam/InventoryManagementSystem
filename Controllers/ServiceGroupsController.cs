@@ -1,102 +1,95 @@
 ﻿using InvWebApp.Data;
-using InvWebApp.Extentions;
 using InvWebApp.Models;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 
 namespace InvWebApp.Controllers
 {
-    [Authorize]
-    public class UsersController : Controller
+    public class ServiceGroupsController : Controller
     {
         private readonly AppDbContext _context;
 
-        public UsersController(AppDbContext context)
+        public ServiceGroupsController(AppDbContext context)
         {
             _context = context;
         }
 
-        // GET: Users
+        // GET: ServiceGroups
         public async Task<IActionResult> Index()
         {
-            var userId = User.getUserId(_context);
-            User user = await _context.Users.FirstOrDefaultAsync(u => u.Id == userId);
-            if (user != null)
-            {
-                return View(new List<User> { user });
-            }
-            else
-            {
-                return NotFound(); // Or handle the case where user is not found
-            }
+            var appDbContext = _context.serviceGroups.Include(s => s.Service);
+            return View(await appDbContext.ToListAsync());
         }
 
-        // GET: Users/Details/5
+        // GET: ServiceGroups/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null || _context.Users == null)
+            if (id == null || _context.serviceGroups == null)
             {
                 return NotFound();
             }
 
-            var user = await _context.Users
+            var serviceGroup = await _context.serviceGroups
+                .Include(s => s.Service)
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (user == null)
+            if (serviceGroup == null)
             {
                 return NotFound();
             }
 
-            return View(user);
+            return View(serviceGroup);
         }
 
-        // GET: Users/Create
+        // GET: ServiceGroups/Create
         public IActionResult Create()
         {
+            ViewData["ServiceName"] = new SelectList(_context.Services, "Id", "ServiceName");
             return View();
         }
 
-        // POST: Users/Create
+        // POST: ServiceGroups/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,UserName,Email,Password,KeepLoggedIn")] User user)
+        public async Task<IActionResult> Create([Bind("Id,GroupName,ServiceId")] ServiceGroup serviceGroup)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(user);
+                _context.Add(serviceGroup);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(user);
+            ViewData["ServiceId"] = new SelectList(_context.Services, "Id", "Id", serviceGroup.ServiceId);
+            return View(serviceGroup);
         }
 
-        // GET: Users/Edit/5
+        // GET: ServiceGroups/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || _context.Users == null)
+            if (id == null || _context.serviceGroups == null)
             {
                 return NotFound();
             }
 
-            var user = await _context.Users.FindAsync(id);
-            if (user == null)
+            var serviceGroup = await _context.serviceGroups.FindAsync(id);
+            if (serviceGroup == null)
             {
                 return NotFound();
             }
-            return View(user);
+            ViewData["ServiceId"] = new SelectList(_context.Services, "Id", "Id", serviceGroup.ServiceId);
+            return View(serviceGroup);
         }
 
-        // POST: Users/Edit/5
+        // POST: ServiceGroups/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,UserName,Email,Password,KeepLoggedIn")] User user)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,GroupName,ServiceId")] ServiceGroup serviceGroup)
         {
-
-            if (id != user.Id)
+            if (id != serviceGroup.Id)
             {
                 return NotFound();
             }
@@ -105,16 +98,12 @@ namespace InvWebApp.Controllers
             {
                 try
                 {
-
-
-                    user.Password = HashPassword(user.Password);
-
-                    _context.Update(user);
+                    _context.Update(serviceGroup);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!UserExists(user.Id))
+                    if (!ServiceGroupExists(serviceGroup.Id))
                     {
                         return NotFound();
                     }
@@ -125,58 +114,51 @@ namespace InvWebApp.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(user);
+            ViewData["ServiceId"] = new SelectList(_context.Services, "Id", "Id", serviceGroup.ServiceId);
+            return View(serviceGroup);
         }
 
-        // GET: Users/Delete/5
+        // GET: ServiceGroups/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null || _context.Users == null)
+            if (id == null || _context.serviceGroups == null)
             {
                 return NotFound();
             }
 
-            var user = await _context.Users
+            var serviceGroup = await _context.serviceGroups
+                .Include(s => s.Service)
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (user == null)
+            if (serviceGroup == null)
             {
                 return NotFound();
             }
 
-            return View(user);
+            return View(serviceGroup);
         }
 
-        // POST: Users/Delete/5
+        // POST: ServiceGroups/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (_context.Users == null)
+            if (_context.serviceGroups == null)
             {
-                return Problem("Entity set 'AppDbContext.Users'  is null.");
+                return Problem("Entity set 'AppDbContext.serviceGroups'  is null.");
             }
-            var user = await _context.Users.FindAsync(id);
-            if (user != null)
+            var serviceGroup = await _context.serviceGroups.FindAsync(id);
+            if (serviceGroup != null)
             {
-                _context.Users.Remove(user);
+                _context.serviceGroups.Remove(serviceGroup);
             }
 
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool UserExists(int id)
+        private bool ServiceGroupExists(int id)
         {
-            return (_context.Users?.Any(e => e.Id == id)).GetValueOrDefault();
-        }
-
-
-
-        // Hashing Passwords using bcrypt
-        public string HashPassword(string password)
-        {
-            var hashedPassword = BCrypt.Net.BCrypt.HashPassword(password);
-            return hashedPassword;
+            return (_context.serviceGroups?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }

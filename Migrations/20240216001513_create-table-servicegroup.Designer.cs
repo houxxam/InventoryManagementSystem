@@ -3,6 +3,7 @@ using System;
 using InvWebApp.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace InvWebApp.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240216001513_create-table-servicegroup")]
+    partial class createtableservicegroup
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -91,9 +94,6 @@ namespace InvWebApp.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<int>("ServiceGroupId")
-                        .HasColumnType("int");
-
                     b.Property<int>("ServiceId")
                         .HasColumnType("int");
 
@@ -103,8 +103,6 @@ namespace InvWebApp.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("CategorieId");
-
-                    b.HasIndex("ServiceGroupId");
 
                     b.HasIndex("ServiceId");
 
@@ -208,12 +206,6 @@ namespace InvWebApp.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("InvWebApp.Models.ServiceGroup", "serviceGroup")
-                        .WithMany()
-                        .HasForeignKey("ServiceGroupId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("InvWebApp.Models.Service", "Service")
                         .WithMany()
                         .HasForeignKey("ServiceId")
@@ -231,8 +223,6 @@ namespace InvWebApp.Migrations
                     b.Navigation("Service");
 
                     b.Navigation("User");
-
-                    b.Navigation("serviceGroup");
                 });
 
             modelBuilder.Entity("InvWebApp.Models.Service", b =>
