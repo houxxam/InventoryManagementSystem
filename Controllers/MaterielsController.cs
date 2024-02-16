@@ -21,7 +21,7 @@ namespace InvWebApp.Controllers
         // GET: Materiels
         public async Task<IActionResult> Index()
         {
-            var appDbContext = _context.Materiels.OrderByDescending(m => m.Id).Include(m => m.Categorie).Include(m => m.Service);
+            var appDbContext = _context.Materiels.OrderByDescending(m => m.Id).Include(m => m.Categorie).Include(m => m.Service).Include(m => m.serviceGroup);
             return View(await appDbContext.ToListAsync());
         }
 

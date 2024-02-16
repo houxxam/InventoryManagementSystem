@@ -78,7 +78,7 @@ namespace InvWebApp.Controllers
             {
                 return NotFound();
             }
-            ViewData["ServiceId"] = new SelectList(_context.Services, "Id", "Id", serviceGroup.ServiceId);
+            ViewData["ServiceId"] = new SelectList(_context.Services, "Id", "ServiceName", serviceGroup.ServiceId);
             return View(serviceGroup);
         }
 

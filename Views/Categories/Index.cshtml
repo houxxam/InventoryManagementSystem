@@ -54,7 +54,7 @@
                     @foreach (var item in Model)
                     {
                         <tr><td>@Html.DisplayFor(modelItem => item.Id)</td>
-                            <td>@Html.DisplayFor(modelItem => item.CategorieName)</td>
+                                <td><a class="table-name-a" href="/Categories/Details/@item.Id">@Html.DisplayFor(modelItem => item.CategorieName)</a></td>
                             <td><a class="btn btn-success" asp-action="Edit" asp-route-id="@item.Id"><i class="fa-solid fa-pen-to-square"></i>&nbsp;Edit</a> </td>
                             <td> <a class="btn btn-primary" asp-action="Details" asp-route-id="@item.Id"><i class="fa-solid fa-circle-info"></i>&nbsp;Details</a></td>
                             <td> <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id"><i class="fa-solid fa-trash"></i>&nbsp;Delete</a></td>

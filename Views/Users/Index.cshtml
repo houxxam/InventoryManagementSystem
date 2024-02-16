@@ -59,7 +59,7 @@
                         {
                             <tr>
                                 <td>
-                                    @Html.DisplayFor(modelItem => item.UserName)
+                                    <a class="table-name-a" href="/Users/Details/@item.Id">@Html.DisplayFor(modelItem => item.UserName)</a>
                                 </td>
                                 <td>
                                     @Html.DisplayFor(modelItem => item.Email)

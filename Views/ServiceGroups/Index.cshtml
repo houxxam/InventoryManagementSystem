@@ -4,39 +4,73 @@
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+<div class="breadcrumbs">
+    <div class="col-sm-4">
+        <div class="page-header float-start">
+            <div class="page-title">
+                <h1>@ViewData["Title"]</h1>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-8">
+        <div class="page-header float-end">
+            <div class="page-title">
+                <ol class="breadcrumb text-right">
+                    <li><a href="/">Dashboard</a></li>
+                    <li><a href="/ServiceGroups">Group</a></li>
+                    <li>List</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container-fluid">
+    <div class="container text-capitalise mb-5">
+        <h2 class="special-heading">Service Groups</h2>
+        <p>Group List</p>
+    </div>
+    <div class="col-lg-12 col-md-12 p-1">
+        <a class="btn btn-primary mb-3" asp-action="Create">Create New</a>
+        <div class="card">
+            <div class="card-header">
+                <strong class="card-title mb-3">Service Groups</strong>
+            </div>
+            <div class="card-body">
+                <table class="table" id="myDatatable">
+                    <thead>
+                        <tr>
+                            <th>
+                                Group Name
+                            </th>
+                            <th>
+                                Service
+                            </th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>
+                                    <a class="table-name-a" href="/ServiceGroups/Details/@item.Id">@Html.DisplayFor(modelItem => item.GroupName)</a>
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Service.ServiceName)
+                                </td>
+                                <td><a class="btn btn-success" asp-action="Edit" asp-route-id="@item.Id"><i class="fa-solid fa-pen-to-square"></i>&nbsp;Edit</a> </td>
+                                <td> <a class="btn btn-primary" asp-action="Details" asp-route-id="@item.Id"><i class="fa-solid fa-circle-info"></i>&nbsp;Details</a></td>
+                                <td> <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id"><i class="fa-solid fa-trash"></i>&nbsp;Delete</a></td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
 
-<h1>Index</h1>
+</div>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                Group Name
-            </th>
-            <th>
-                Service
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.GroupName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Service.ServiceName)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+

@@ -896,3 +896,10 @@ header.fixed-top {
 .control-label {
     margin: 5px auto;
 }
+.table-name-a {
+    color: #000;
+    font-weight: bolder;
+}
+.table-name-a:hover {
+    color: #0d6efd;
+}

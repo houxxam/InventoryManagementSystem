@@ -57,7 +57,7 @@
                         {
                             <tr>
                                 <td>@Html.DisplayFor(modelItem => item.Id)</td>
-                                <td>@Html.DisplayFor(modelItem => item.ServiceName)</td>
+                                <td><a class="table-name-a" href="/Services/Details/@item.Id">@Html.DisplayFor(modelItem => item.ServiceName)</a></td>
                                 <td><a class="btn btn-success" asp-action="Edit" asp-route-id="@item.Id"><i class="fa-solid fa-pen-to-square"></i>&nbsp;Edit</a> </td>
                                 <td> <a class="btn btn-primary" asp-action="Details" asp-route-id="@item.Id"><i class="fa-solid fa-circle-info"></i>&nbsp;Details</a></td>
                                 <td> <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id"><i class="fa-solid fa-trash"></i>&nbsp;Delete</a></td>

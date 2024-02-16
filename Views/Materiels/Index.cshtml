@@ -43,26 +43,27 @@
                         <tr>
                             <th>#</th>
                             <th>
-                                @Html.DisplayNameFor(model => model.MaterielName)
+                                Materiel Name
                             </th>
                             <th>
-                                @Html.DisplayNameFor(model => model.CreatedDate)
+                                Created Date
                             </th>
                             <th>
-                                @Html.DisplayNameFor(model => model.SerialNumber)
+                                Serial Number
                             </th>
                             <th>
-                                @Html.DisplayNameFor(model => model.InventoryNumber)
+                                Inventory Number
                             </th>
                             <th>
-                                @Html.DisplayNameFor(model => model.MaterielOwner)
+                                Categorie
                             </th>
                             <th>
-                                @Html.DisplayNameFor(model => model.Categorie)
+                                Service
                             </th>
                             <th>
-                                @Html.DisplayNameFor(model => model.Service)
+                                Group
                             </th>
+                            <th>Owner</th>
                             <th></th>
                             <th></th>
                             <th></th>
@@ -74,7 +75,7 @@
                             <tr>
                                 <td>@Html.DisplayFor(modelItem => item.Id)</td>
                                 <td>
-                                    <a href="/Materiels/Details/@item.Id">@Html.DisplayFor(modelItem => item.MaterielName)</a>
+                                    <a class="table-name-a" href="/Materiels/Details/@item.Id">@Html.DisplayFor(modelItem => item.MaterielName)</a>
                                 </td>
                                 <td>
                                     @Html.DisplayFor(modelItem => item.CreatedDate)
@@ -85,14 +86,18 @@
                                 <td>
                                     @Html.DisplayFor(modelItem => item.InventoryNumber)
                                 </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.MaterielOwner)
-                                </td>
+                               
                                 <td>
                                     @Html.DisplayFor(modelItem => item.Categorie.CategorieName)
                                 </td>
                                 <td>
                                     @Html.DisplayFor(modelItem => item.Service.ServiceName)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.serviceGroup.GroupName)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.MaterielOwner)
                                 </td>
                                 <td><a class="btn btn-success" asp-action="Edit" asp-route-id="@item.Id"><i class="fa-solid fa-pen-to-square"></i>&nbsp;Edit</a> </td>
                                 <td> <a class="btn btn-primary" asp-action="Details" asp-route-id="@item.Id"><i class="fa-solid fa-circle-info"></i>&nbsp;Details</a></td>
