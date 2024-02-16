@@ -130,7 +130,7 @@ namespace InvWebApp.Controllers
             {
                 return NotFound();
             }
-            ViewData["groupId"] = new SelectList(_context.serviceGroups, "Id", "GroupName", materiel.ServiceGroupId);
+            ViewData["GroupId"] = new SelectList(_context.serviceGroups, "Id", "GroupName", materiel.ServiceGroupId);
             ViewData["CategorieId"] = new SelectList(_context.Categories, "Id", "CategorieName", materiel.CategorieId);
             ViewData["ServiceId"] = new SelectList(_context.Services, "Id", "ServiceName", materiel.ServiceId);
             return View(materiel);
@@ -142,7 +142,7 @@ namespace InvWebApp.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id,
-            [Bind("Id,MaterielName,CreatedDate,SerialNumber,InventoryNumber,MaterielOwner,CategorieId,ServiceId,ServiceGroup,UserId")]
+            [Bind("Id,MaterielName,CreatedDate,SerialNumber,InventoryNumber,MaterielOwner,CategorieId,ServiceId,ServiceGroupId,UserId")]
             Materiel materiel)
         {
             if (id != materiel.Id)
@@ -151,7 +151,9 @@ namespace InvWebApp.Controllers
             }
 
             // check categorie if is exists allready before update
-            var existingMateriel = _context.Materiels.FirstOrDefault(u => u.SerialNumber.ToLower() == materiel.SerialNumber.ToLower());
+            var existingMateriel = _context.Materiels.FirstOrDefault(u => u.SerialNumber.ToLower() == materiel.SerialNumber.ToLower() && u.Id != materiel.Id);
+
+
 
             if (existingMateriel != null)
             {
@@ -159,13 +161,19 @@ namespace InvWebApp.Controllers
 
             }
 
+
+
             if (ModelState.IsValid)
             {
                 try
                 {
+
+
                     materiel.UserId = User.getUserId(_context);
                     _context.Update(materiel);
                     await _context.SaveChangesAsync();
+
+
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -182,6 +190,7 @@ namespace InvWebApp.Controllers
 
                 return RedirectToAction(nameof(Index));
             }
+
 
             ViewData["CategorieId"] = new SelectList(_context.Categories, "Id", "CategorieName", materiel.CategorieId);
             ViewData["ServiceId"] = new SelectList(_context.Services, "Id", "ServiceName", materiel.ServiceId);

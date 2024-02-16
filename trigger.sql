@@ -93,3 +93,4 @@ CREATE TRIGGER `tr_delete_materiels` AFTER DELETE ON `Materiels`
         VALUES (CONCAT(' Delete Materiel ','<strong>',OLD.MaterielName,'</strong>'), 'delete',  CURRENT_TIMESTAMP(), OLD.UserId);
     END;
 //
+

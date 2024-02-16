@@ -77,9 +77,8 @@
                                         <span asp-validation-for="ServiceId" class="text-danger"></span>
                                     </div>
                                     <div class="form-group col-sm-6">
-                                        <label asp-for="serviceGroup" class="control-label">Group</label>
-                                        <select asp-for="serviceGroup" class="form-control" asp-items="ViewBag.groupId"></select>
-                                        <span asp-validation-for="serviceGroup" class="text-danger"></span>
+                                        <label asp-for="ServiceGroupId" class="control-label">Group Name</label>
+                                        <select asp-for="ServiceGroupId" id="groupDropdown1" class="form-control" asp-items="ViewBag.GroupId"></select>
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -96,7 +95,7 @@
                 </div>
             </div>
             <div class="form-group">
-                <a class="mt-3 btn btn-secondary" asp-action="Index"><i class="fa-solid fa-angle-left"></i>&nbsp;Back to List</a>
+                <a class="mt-3 btn btn-secondary mb-3" asp-action="Index"><i class="fa-solid fa-angle-left"></i>&nbsp;Back to List</a>
             </div>
         </div>
     </div>
