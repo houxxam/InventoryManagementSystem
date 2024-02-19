@@ -36,7 +36,7 @@ namespace InvWebApp
         [HttpPost]
         public async Task<ActionResult<Materiel>> PostMateriel(string materielName, string serialNumber, string categorie, string service, string group)
         {
-            // HIT-RAD-REC
+            // /api/MaterielsApi?materielName1=&serialNumber=&categorie=&service=&group=
             var cat = _context.Categories.FirstOrDefault(c => c.CategorieName.ToLower() == categorie.ToLower());
             var ser = _context.Services.FirstOrDefault(s => s.ServiceName.ToLower() == service.ToLower());
             var grp = _context.serviceGroups.FirstOrDefault(g => g.GroupName.ToLower() == group.ToLower());
