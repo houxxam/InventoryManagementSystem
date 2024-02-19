@@ -11328,23 +11328,23 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\HouxxaM\\.nuget\\packages\\": {},
+    "C:\\Users\\user\\.nuget\\packages\\": {},
     "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\HouxxaM\\Desktop\\InventoryManagementSystem\\InvWebApp.csproj",
+      "projectUniqueName": "C:\\Users\\user\\source\\repos\\InventoryManagementSystem\\InvWebApp.csproj",
       "projectName": "InvWebApp",
-      "projectPath": "C:\\Users\\HouxxaM\\Desktop\\InventoryManagementSystem\\InvWebApp.csproj",
-      "packagesPath": "C:\\Users\\HouxxaM\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\HouxxaM\\Desktop\\InventoryManagementSystem\\obj\\",
+      "projectPath": "C:\\Users\\user\\source\\repos\\InventoryManagementSystem\\InvWebApp.csproj",
+      "packagesPath": "C:\\Users\\user\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\user\\source\\repos\\InventoryManagementSystem\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
       ],
       "configFilePaths": [
-        "C:\\Users\\HouxxaM\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\user\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
@@ -11353,6 +11353,7 @@
       ],
       "sources": {
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+        "C:\\Program Files\\dotnet\\library-packs": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
