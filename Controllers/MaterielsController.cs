@@ -191,7 +191,7 @@ namespace InvWebApp.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-
+            ViewData["GroupId"] = new SelectList(_context.serviceGroups, "Id", "GroupName", materiel.ServiceGroupId);
             ViewData["CategorieId"] = new SelectList(_context.Categories, "Id", "CategorieName", materiel.CategorieId);
             ViewData["ServiceId"] = new SelectList(_context.Services, "Id", "ServiceName", materiel.ServiceId);
             return View(materiel);

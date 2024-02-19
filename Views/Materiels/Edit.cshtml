@@ -73,12 +73,12 @@
                                 <div class="row">
                                     <div class="form-group col-sm-6">
                                         <label asp-for="ServiceId" class="control-label">Service</label>
-                                        <select asp-for="ServiceId" class="form-control" asp-items="ViewBag.ServiceId"></select>
+                                        <select id="serviceDropdown" asp-for="ServiceId" class="form-control" asp-items="ViewBag.ServiceId"></select>
                                         <span asp-validation-for="ServiceId" class="text-danger"></span>
                                     </div>
                                     <div class="form-group col-sm-6">
                                         <label asp-for="ServiceGroupId" class="control-label">Group Name</label>
-                                        <select asp-for="ServiceGroupId" id="groupDropdown1" class="form-control" asp-items="ViewBag.GroupId"></select>
+                                        <select id="groupDropdown" asp-for="ServiceGroupId" id="groupDropdown1" class="form-control" asp-items="ViewBag.GroupId"></select>
                                     </div>
                                 </div>
                                 <div class="form-group">

@@ -36,4 +36,31 @@ jQuery(document).ready(function ($) {
 	// });
 
 
+
+	// Change Select Value
+
+	// Fetch groups for the initially selected service on page load
+	var selectedServiceId = $('#serviceDropdown').val();
+	fetchGroups(selectedServiceId);
+
+	// Handle change event of service dropdown
+	$('#serviceDropdown').change(function () {
+		var selectedServiceId = $(this).val();
+		fetchGroups(selectedServiceId);
+	});
+	function fetchGroups(serviceId) {
+		$.ajax({
+			url: '/Materiels/GetGroups',
+			type: 'GET',
+			data: { serviceId: serviceId },
+			success: function (data) {
+				// Update group dropdown with fetched groups
+				$('#groupDropdown').empty();
+				$.each(data, function (index, item) {
+					$('#groupDropdown').append($('<option>').text(item.groupName).attr('value', item.id));
+				});
+			}
+		});
+	}
 });
+
