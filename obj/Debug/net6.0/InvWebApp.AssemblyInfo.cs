@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("InvWebApp")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+c9494cbb04475b386d21548f3d0769ae046b0837")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+281894915023fab408d8976f234e6bc3a58a920d")]
 [assembly: System.Reflection.AssemblyProductAttribute("InvWebApp")]
 [assembly: System.Reflection.AssemblyTitleAttribute("InvWebApp")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
