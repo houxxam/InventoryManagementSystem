@@ -37,7 +37,7 @@ jQuery(document).ready(function ($) {
 
 
 
-	// Change Select Value
+	// Change Select Value insert
 
 	// Fetch groups for the initially selected service on page load
 	var selectedServiceId = $('#serviceDropdown').val();
@@ -62,5 +62,9 @@ jQuery(document).ready(function ($) {
 			}
 		});
 	}
+
+
+
+	
 });
 
