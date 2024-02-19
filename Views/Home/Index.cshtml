@@ -1,0 +1,244 @@
+﻿@model DashboardData
+@{
+    ViewData["Title"] = "dashboard";
+
+}
+
+<div class="breadcrumbs">
+    <div class="col-sm-4">
+        <div class="page-header float-start">
+            <div class="page-title">
+                <h1>Dashboard</h1>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-8">
+        <div class="page-header float-end">
+            <div class="page-title">
+                <ol class="breadcrumb text-right">
+                    <li><a href="/">Dashboard</a></li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Start dashoboard page -->
+
+<div class="container-fluid mt-3">
+   
+    <div class="col-sm-12 mb-4">
+        <div class="card-group">
+            <div class="card col-md-6 no-padding bg-flat-color-1 d-flex flex-column text-light">
+                <div class="card-body justify-content-end float-end">
+                    <div class="h1 text-muted text-right mb-3">
+                        <i class="fa-solid fa-desktop text-light"></i>
+                    </div>
+
+                    <div class="h4 mb-0">
+                        <span class="count fw-bold">@ViewBag.getMatCount</span>
+                    </div>
+
+                    <small class="text-uppercase font-weight-bold">Materiel</small>
+
+                </div>
+            </div>
+            <div class="card col-md-6 no-padding bg-flat-color-2 text-light">
+                <div class="card-body">
+                    <div class="h1 text-muted text-right mb-3">
+                        <i class="fa-regular fa-folder-open text-light"></i>
+                    </div>
+                    <div class="h4 mb-0">
+                        <span class="count fw-bold">@ViewBag.getCatCount</span>
+                    </div>
+                    <small class="text-uppercase font-weight-bold">Categorie</small>
+
+                </div>
+            </div>
+            <div class="card col-md-6 no-padding bg-flat-color-3 text-light">
+                <div class="card-body">
+                    <div class="h1 text-muted text-right mb-3">
+                        <i class="fa-solid fa-hospital text-light"></i>
+                    </div>
+                    <div class="h4 mb-0">
+                        <span class="count fw-bold">@ViewBag.getServCount</span>
+                    </div>
+                    <small class="text-uppercase font-weight-bold">Service</small>
+
+                </div>
+            </div>
+            <div class="card col-md-6 no-padding bg-flat-color-4 text-light">
+                <div class="card-body">
+                    <div class="h1 text-muted text-right mb-3">
+                        <i class="fa-solid fa-user text-light"></i>
+                    </div>
+                    <div class="h4 mb-0">
+                        <span class="count fw-bold">@ViewBag.getUserCount</span>
+                    </div>
+                    <small class="text-uppercase font-weight-bold">user</small>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="container-fluid">
+
+        <div class="col-lg-6 col-md-12 p-1">
+            <div class="card">
+                <div class="card-header">
+                    <strong class="card-title mb-3">Materiels</strong>
+                </div>
+                <div class="card-body">
+                    @if (Model != null)
+                    {
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th scope="col">ID</th>
+                                    <th scope="col">Materiel Name</th>
+                                    <th scope="col">Created Date</th>
+                                    <th scope="col">Categorie</th>
+                                    <th scope="col">Service</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model.MaterielList)
+                                {
+                                    <tr>
+                                        <td>@item.Id</td>
+                                        <td>@item.MaterielName</td>
+                                        <td>@item.CreatedDate</td>
+                                        <td>@item.Categorie.CategorieName</td>
+                                        <td>@item.Service.ServiceName</td>
+                                    </tr>
+
+                                }
+                            </tbody>
+                        </table>
+                    }
+                    else
+                    {
+                        <p>No data available</p>
+                    }
+                    <a href="/Materiels" class="btn btn-primary float-end"><i class="fa-solid fa-angle-right"></i>&nbsp; See More</a>
+
+                </div>
+            </div>
+        </div>
+
+
+
+        <div class="col-lg-6 col-md-12 p-1">
+            <div class="card">
+                <div class="card-header">
+                    <strong class="card-title mb-3">Categories</strong>
+                </div>
+                <div class="card-body">
+                    @if (Model != null)
+                    {
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                  <th scope="col">ID</th> 
+                                    <th scope="col">Categorie Name</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                        @foreach (var item in Model.CategorieList)
+                        {
+                            <tr>
+                                <td>@item.Id</td>
+                                <td>@item.CategorieName</td>
+                            </tr>
+                            
+                        }
+                            </tbody>
+                        </table>
+                    }
+                    else
+                    {
+                        <p>No data available</p>
+                    } 
+                    <a href="/Categories" class="btn btn-primary float-end"><i class="fa-solid fa-angle-right"></i>&nbsp; See More</a>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-6 col-md-12 p-1">
+            <div class="card">
+                <div class="card-header">
+                    <strong class="card-title mb-3">Services</strong>
+                </div>
+                <div class="card-body">
+                    @if (Model != null)
+                    {
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th scope="col">ID</th>
+                                    <th scope="col">Service Name</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model.ServiceList)
+                                {
+                                    <tr>
+                                        <td>@item.Id</td>
+                                        <td>@item.ServiceName</td>
+                                    </tr>
+
+                                }
+                            </tbody>
+                        </table>
+                    }
+                    else
+                    {
+                        <p>No data available</p>
+                    }
+                    <a href="/Services" class="btn btn-primary float-end"><i class="fa-solid fa-angle-right"></i>&nbsp; See More</a>
+
+                </div>
+            </div>
+        </div>
+
+
+        <div class="col-lg-6 col-md-12 p-1">
+            <div class="card">
+                <div class="card-header">
+                    <strong class="card-title mb-3">Log</strong>
+                </div>
+                <div class="card-body">
+
+                    @foreach (var log in Model._LogList)
+                    {
+                        <div class="alert alert-@getColor(log.LogType)" role="alert">
+                            <strong>@log.User.UserName</strong>@Html.Raw( @log.LogMessage) <span>@log.LogDate</span> !
+                        </div>
+                    }
+                    
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@functions {
+    private string getColor(string action)
+    {
+        switch (action)
+        {
+            case "insert":
+                return "success";
+            case "edit":
+                return "primary";
+            case "delete":
+                return "danger";
+            default:
+                return "secondary";
+        }
+    }
+}
