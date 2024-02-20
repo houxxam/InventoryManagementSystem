@@ -39,16 +39,14 @@ namespace InvWebApp
         {
             var mat = _context.Materiels.FirstOrDefault(s=>s.SerialNumber == dto.SerialNumber);
 
-            if (dto.SerialNumber != mat.SerialNumber)
-            {
+           
                 // /api/MaterielsApi?materielName1=&serialNumber=&categorie=&service=&group=
                 var cat = _context.Categories.FirstOrDefault(c => c.CategorieName.ToLower() == dto.Categorie.ToLower());
                 var ser = _context.Services.FirstOrDefault(s => s.ServiceName.ToLower() == dto.Service.ToLower());
                 var grp = _context.serviceGroups.FirstOrDefault(g => g.GroupName.ToLower() == dto.Group.ToLower());
 
-
-
-
+            if (mat is null)
+            {
 
                 if (cat is null)
                 {
